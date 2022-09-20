@@ -1,0 +1,53 @@
+<html>
+        <head>
+            <title>YTMDesktop Companion Server</title>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+            <script
+                src="https://code.jquery.com/jquery-3.4.1.min.js"
+                integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+                crossorigin="anonymous"></script>
+            <style>
+                html, body {
+                    margin: 0;
+                    padding: 0;
+                    text-align: center;
+                }
+            </style>
+            <script>
+                $(function() { // FIXME: onready
+                    $.getJSON('https://oo58dbzvuh.execute-api.us-west-1.amazonaws.com/default/ytmdesktop-register', function(data) {
+                        data.record.forEach(address => {
+                            try{
+                                $.get(`http://${address}`, function(res){
+                                if(res.includes('YTMDesktop Companion Server')){
+                                    $('#tbody')[0].innerHTML += `
+                                        <tr><td>${address}</td></tr>
+                                    `
+                                    console.log(address);
+                                }
+                                })
+                            } catch{}
+                        });
+                        // document.body.innerText = JSON.stringify(data.record);
+                    })
+                });
+            </script>
+        </head>
+        <body>
+            <h2>YTMDesktop Companion Server</h2>
+
+            <div class="container">
+                <table class="striped highlight">
+                        <thead>
+                            <tr>
+                                <th>Running YTMD Companion Server</th>
+                            </tr>
+                        </thead>
+                        <tbody id='tbody'>
+                            
+                        </tbody>
+                    </table>
+            </div>
+        </body>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    </html>
